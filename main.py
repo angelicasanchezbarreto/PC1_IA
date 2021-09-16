@@ -23,7 +23,7 @@ x_valid, x_test, y_valid, y_test = train_test_split(x_rest,y_rest,test_size=0.67
 def h(x, w, b):
     sum_value = 0
     for i in range(len(w)):
-        sum_value += (w[i] * pow(x, i))
+        sum_value += (w[i] * pow(x[i], i))
     return sum_value + b
   #return np.dot(x, np.transpose(w)) + b
 
