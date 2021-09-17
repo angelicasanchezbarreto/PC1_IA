@@ -16,15 +16,15 @@ plt.plot(x,y,'*')
 """**Pregunta 2**"""
 
 x_train, x_rest, y_train, y_rest = train_test_split(x,y,train_size=0.7, shuffle=True)
-x_valid, x_test, y_valid, y_test = train_test_split(x_rest,y_rest,test_size=0.67)
+x_valid, x_test, y_valid, y_test = train_test_split(x_rest,y_rest,test_size=0.33)
 
 """**Pregunta 3**"""
 
-def h(x, w, b):
+def h(x_i, w, b):
     sum_value = 0
-    for i in range(len(w)):
-        sum_value += (w[i] * pow(x[i], i))
-    return sum_value + b
+    for j in range(len(w)):
+        sum_value += (w[j] * pow(x_i, j))
+    return sum_value+b
   #return np.dot(x, np.transpose(w)) + b
 
 def derivada(y,x,b,w,p):
@@ -32,11 +32,11 @@ def derivada(y,x,b,w,p):
   sum2 = 0
   dw_temp = []
   for i in range(len(x)):
-    sum1 += (y[i] - h(x,w,b)) * (-1)
+    sum1 += (y[i] - h(x[i],w,b)) * (-1)
   
   for j in range(p):
     for i in range(len(x)):
-      sum2 += (y[i] - h(x,w,b)) * pow(-x[i], j+1)
+      sum2 += (y[i] - h(x[i],w,b)) * pow(-x[i], j+1)
       dw_temp.append(sum2)
   
   db = sum1 / len(x)
@@ -51,7 +51,7 @@ def update(w,b,dw,db,alpha,p):
 def error_without_reg(y,x,b,w):
   sum1 = 0
   for i in range(len(x)):
-    sum1 += pow(y[i] - h(x,w,b), 2)
+    sum1 += pow(y[i] - h(x[i],w,b), 2)
 
   sum1 /= 2*len(x)
   return sum1
@@ -60,7 +60,7 @@ def error_with_reg(y,x,w,b,lamda_value,p):
     sum1 = 0
     sum2 = 0
     for i in range(len(x)):
-      sum1 += pow(y[i] - h(x,w,b), 2)
+      sum1 += pow(y[i] - h(x[i],w,b), 2)
 
     for j in range(len(p)):
       sum2 += pow(w[j], 2)
@@ -80,6 +80,7 @@ def algorithm1(alpha,p,epochs):
       error_list.append(e)
       if i > 20000:
           break
+  return error_list
 
 """**Pregunta 4**"""
 
@@ -139,12 +140,12 @@ def algorithm5(alpha):
 def error_test(y, x, b, w):
     sum_value = 0
     for i in range(len(x)):
-        sum_value += pow(y[i] - h(x, w, b), 2)
+        sum_value += pow(y[i] - h(x[i], w, b), 2)
     sum_value /= 2*len(x)
     return sum_value
 
-def testing(alpha,grado,epochs,p):
-    w = np.linspace(0, 1, num = grado)
+def testing(alpha,p,epochs):
+    w = np.linspace(0, 1, num = p)
     b = np.random.rand()
     testing = []
     for i in range(epochs):
@@ -155,5 +156,5 @@ def testing(alpha,grado,epochs,p):
         if i > 20000:
             break
 
-t = testing(0.006, 5, 100)
-plt.plot(t, y, '*')
+""" t = testing(0.006, 5, 100)
+plt.plot(t, y, '*') """
